@@ -1,0 +1,32 @@
+import { db } from './index';
+import { content } from './schema';
+const rows: { id: string; kind: string; data: Record<string,string> }[] = [];
+const add = (id: string, kind: string, data: Record<string,string>) => rows.push({ id, kind, data });
+[
+ ['Síndrome Metabólica','Louise Catugy','31/08'],
+ ['Laminite','Maria Helena Lourenço Santos','14/09'],
+ ['Rabdomiólise por Esforço','Ivan dos Reis Lima Filho','21/09'],
+ ['Adenite Equina (Garrotilho)','Laila Elisabete Ferreira Carvalho','28/09'],
+ ['ORVA (Obstrução Recorrente das Vias Aéreas)','Maria Joaquina Rodrigues dos Santos','05/10'],
+].forEach(([title,speaker,partialDate],i) => add(`event-${i}`,'event',{title,speaker,partialDate,theme:title,status:'A confirmar',date:'',time:'',location:'',description:'Atividade informada no cronograma do grupo. Ano, horário, local e situação aguardam confirmação da gestão.'}));
+[['Yasmin Barbosa','Presidente'],['Júlia Assis','Vice-presidente'],['Laís Ana','Diretora-geral'],['Beatriz Sampaio','Diretora científica'],['Laila Ferreira','Diretora de marketing']].forEach(([title,role],i)=>add(`member-${i}`,'member',{title,role,description:''}));
+add('semeq-initial','semeq',{title:'Semana de Medicina Equina',period:'05 a 09 de outubro',year:'',location:'Sala 405, Unijorge — quando aplicável',description:'Um espaço dedicado à troca de conhecimentos e ao aprendizado em medicina equina. A programação detalhada e o ano desta edição aguardam confirmação da gestão.',program:'',partners:'',thanks:'',access:''});
+add('about','institution',{title:'Sobre o GEMEDE',description:'O GEMEDE — Grupo de Estudos em Medicina Equina da Unijorge — é um espaço de aprendizado voltado a estudantes de Medicina Veterinária, professores e pessoas interessadas em equinos. O estudo em grupo aproxima o conhecimento teórico de discussões sobre a prática veterinária e incentiva a troca de experiências.',mission:'Promover o aprendizado e a atualização científica em medicina equina, valorizando a formação acadêmica, o cuidado com os animais e a integração entre estudantes, professores e profissionais.',objectives:'Aprofundar conhecimentos teóricos e práticos; estimular a pesquisa e a extensão; promover palestras, encontros e atividades educativas; incentivar o pensamento crítico e a atualização científica.',participate:'Participar de um grupo de estudos amplia as oportunidades de discussão, fortalece a colaboração e ajuda a construir uma formação veterinária comprometida com a ciência e o bem-estar equino.'});
+add('faq-1','faq',{title:'Como posso participar do GEMEDE?',description:'Entre em contato pelo Instagram @gemede.uj ou pelo e-mail gemedequina@gmail.com para consultar as orientações e oportunidades de participação.'});
+add('faq-2','faq',{title:'Onde encontro as próximas atividades?',description:'Consulte Eventos e palestras e o Calendário. Apenas atividades com data completa e confirmada aparecem na agenda.'});
+add('faq-3','faq',{title:'As atividades acontecem sempre na Sala 405?',description:'A Sala 405 da Unijorge é um local de referência quando aplicável. Confira sempre o local informado para cada atividade.'});
+const digestive='https://www.extension.iastate.edu/equine/synopsis-digestive-anatomy-and-physiology-horse';
+const ems='https://www.merckvetmanual.com/metabolic-disorders/equine-metabolic-syndrome/equine-metabolic-syndrome';
+const colic='https://www.merckvetmanual.com/digestive-system/colic-in-horses/overview-of-colic-in-horses';
+const strangles='https://www.merckvetmanual.com/respiratory-system/respiratory-diseases-of-horses/strangles-in-horses';
+[
+ ['Anatomia e fisiologia equina','Básico','Onde ocorre grande parte da fermentação microbiana das fibras no equino?','Ceco e cólon\nEstômago\nEsôfago\nDuodeno','0','A fermentação das fibras ocorre principalmente no intestino grosso, com destaque para ceco e cólon.',digestive],
+ ['Nutrição e manejo','Básico','Qual alimento fornece fibra estrutural essencial na dieta equina?','Óleo vegetal\nVolumoso, como feno e pastagem\nSal mineral\nAçúcar','1','Os volumosos fornecem fibras que sustentam a fermentação no intestino grosso. A dieta deve ser ajustada individualmente.',digestive],
+ ['Clínica médica de equinos','Intermediário','Qual alteração é um componente consistente da síndrome metabólica equina?','Hipotireoidismo obrigatório\nDisregulação da insulina\nInfecção por Streptococcus equi\nFratura da falange distal','1','A disregulação da insulina é um componente central da síndrome metabólica equina e está associada ao risco de laminite.',ems],
+ ['Clínica médica de equinos','Avançado','A ausência de obesidade generalizada exclui síndrome metabólica equina?','Sim, em todos os casos\nSim, se o animal for jovem\nNão; a disregulação da insulina pode ocorrer sem obesidade generalizada\nNão, pois a síndrome é sempre infecciosa','2','O fenótipo pode variar. Obesidade não é uma condição obrigatória para a presença de disregulação da insulina; a avaliação clínica e os testes são essenciais.',ems],
+ ['Doenças infecciosas e parasitárias','Básico','Qual agente causa a adenite equina, conhecida como garrotilho?','Streptococcus equi subsp. equi\nVírus da raiva\nClostridium tetani\nSalmonella enterica','0','O garrotilho é uma doença contagiosa causada por Streptococcus equi subsp. equi, frequentemente com abscessos em linfonodos.',strangles],
+ ['Síndrome cólica equina','Básico','Na medicina equina, o termo cólica descreve principalmente:','Uma doença causada apenas por parasitas\nDor abdominal\nUma fratura de membro\nUma doença exclusivamente gástrica','1','Cólica é a manifestação de dor abdominal e pode ter múltiplas causas. A avaliação veterinária determina a origem e a gravidade.',colic],
+ ['Emergências veterinárias','Intermediário','Um cavalo apresenta dor abdominal persistente. Qual é a conduta mais adequada?','Aguardar vários dias\nForçar exercício intenso\nSolicitar avaliação veterinária imediata\nAdministrar medicamentos sem avaliação','2','Dor persistente pode indicar uma emergência. A avaliação veterinária rápida é necessária; medicamentos e decisões terapêuticas dependem do exame clínico.',colic],
+].forEach(([category,level,title,options,correct,explanation,source],i)=>add(`question-${i}`,'question',{category,level,title,options,correct,explanation,source}));
+for (const row of rows) await db.insert(content).values(row).onConflictDoNothing();
+console.log(`Conteúdo inicial: ${rows.length} registros processados sem sobrescrever edições.`);
